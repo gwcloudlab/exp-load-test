@@ -1,0 +1,82 @@
+[
+    {
+        "name": "exp-1",
+        "description": "This is the first experiment. With 100 worker connections.",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/default/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 100
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
+    },
+    {
+        "name": "exp-2",
+        "description": "This is the second experiment. With 200 worker connections.",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/default/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 200
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
+    },
+    {
+        "name": "exp-3",
+        "description": "This is the third experiment. With 400 worker connections.",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/default/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 400
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
+    },
+    {
+        "name": "exp-4",
+        "description": "Average Load Test",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/average-load-test/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 400
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
+    },
+    {
+        "name": "exp-5",
+        "description": "Spike Test",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/spike-test/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 400
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
+    }
+]
