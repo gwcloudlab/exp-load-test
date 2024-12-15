@@ -107,3 +107,57 @@ After this, you will have a directory created with the name `experiments/exp-1` 
 You can use these metrics to analyze the performance of teh web server throughout the duration of the experiment. 
 
 
+## Organization of this repository
+
+This repository is organized as follows: 
+
+```shell
+.
+├── .cloudlab
+├── configs
+│   ├── k6
+│   └── server
+├── examples
+│   └── k6
+│       ├── k6_resp
+│       │   └── output
+│       ├── open-model
+│       └── testing-types
+├── experiments
+│   └── exp-1
+│       ├── config
+│       │   ├── loadgen
+│       │   └── server
+│       └── metrics
+│           ├── loadgen
+│           └── server
+├── loadgen
+├── scripts
+├── server
+└── setup
+│   └── cloudlab-tools
+├── experiments.json
+├── install.sh
+├── LICENSE
+├── Makefile
+├── README.md
+└── requirements.txt
+```
+
+- `.cloudlab`: This directory is created when you run the `make cl-setup` command. This directory contains the cloudlab configurations. This directory is excluded from the git version controlling.
+- `configs`: This directory contains the configurations for both the server and the load generator. 
+    - `k6`: This directory contains the k6 script files. 
+    - `server`: This directory contains the configurations for the web server.
+- `examples`: This directory contains examples of k6 scripts.
+- `experiments`: This directory contains the results of the experiments. This directory is excluded from the git version controlling. 
+- `loadgen`: This directory contains the benchmarking scripts for the load generator. 
+- `scripts`: This directory contains the shell scripts to perform the experiments.
+- `server`: This directory contains the configuration and benchmarking scripts for the server.
+- `setup`: This directory contains the setup scripts, including the cloudlab-tools submodule. 
+- `experiments.json`: This flie contains all hte experiments you would wish to perform. You can add experiment metadata here and use the make targets to perform the experiments.
+- `install.sh`: This script contains the installation scripts, useful for setting up the server. 
+- `Makefile`: This file contains a collection of make targets useful for setting up and running the experiments. 
+- `requirements.txt`: This file contains the python requirements useful for plotting the results. 
+
+
+
