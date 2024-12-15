@@ -1,0 +1,6 @@
+.DS_Store
+
+
+#Output files
+examples/**/output/cleaned_results.csv
+examples/**/output/test_results.log
