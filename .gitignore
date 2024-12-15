@@ -1,5 +1,10 @@
 .DS_Store
 
+.cloudlab/** 
+.vscode/**
+**/venv/**
+**/.venv/**
+experiments/** 
 
 #Output files
 examples/**/output/cleaned_results.csv
