@@ -1,0 +1,66 @@
+cpu file: /tmp/tmp.LtIXQk9oHv
+mem file: /tmp/tmp.Mbk1kerxKk
+bandwidth file: /tmp/tmp.S0Wr7bcSZK
+sock file: /tmp/tmp.6P44EoAbDj
+vus file: /tmp/tmp.HiMfk8dUtF
+rps file: /tmp/tmp.ULoAhkfzVU
+error log: /tmp/tmp.v4ABPqlTGZ
+benchmarking http://192.168.1.2 endpoint (192.168.1.2) with tool k6
+benchmark url: http://192.168.1.2<
+error log: /tmp/tmp.v4ABPqlTGZ
+using device enp6s0f0 with max bandwidth 1280000 KB/s
+pid is 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Collecting metrics for process 22586
+Process 22586 has terminated. Exiting loop.
+Cleaning up...
+Sending benchmarking end signal to the server.

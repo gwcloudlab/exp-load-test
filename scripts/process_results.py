@@ -1,9 +1,15 @@
+import os
 import re
 import pandas as pd
 import argparse
 
 
 def process_results(src_file: str, dest_file: str) -> None:
+
+    if not os.path.exists(src_file):
+        print(f'File not found: {src_file}')
+        return
+
     # Read the log file
     with open(src_file, 'r') as f:
         lines = f.readlines()
@@ -29,7 +35,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    process_results(f'{args.exp_dir}/metrics/loadgen/out.txt', f'{args.exp_dir}/metrics/loadgen/req_results.csv') 
+    process_results(f'{args.exp_dir}/metrics/loadgen/out.txt', f'{args.exp_dir}/metrics/loadgen/per_req_results.csv') 
 
 if __name__ == '__main__':
     main()

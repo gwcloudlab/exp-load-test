@@ -61,6 +61,7 @@ copy-exp-data:
 	mkdir -p ${EXP_DIR}/metrics/loadgen ${EXP_DIR}/metrics/server && \
 	$(MAKE) cl-scp-from-host NODE=$(SERVER_NODE) SCP_SRC=$(REMOTE_DIR)/exp-load-test/experiments/${EXP_NAME}/metrics/server SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
 	$(MAKE) cl-scp-from-host NODE=$(LOAD_GEN_NODE) SCP_SRC=$(REMOTE_DIR)/exp-load-test/experiments/${EXP_NAME}/metrics/loadgen SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
+	source .venv/bin/activate && python3 scripts/process_results.py --exp-dir ${EXP_DIR} && \
 	echo "Experiment data copied"
 
 gen-exp-config:
@@ -84,6 +85,7 @@ run-exp:
 	$(MAKE) sync-code-to-nodes && \
 	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/server && make benchmark-server EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
 	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/loadgen && make perform-exp BENCHMARK_URL=${BENCHMARK_URL} EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
+	$(MAKE) copy-exp-data && \
 	echo "Experiment ${EXP_NAME} done"
 
 

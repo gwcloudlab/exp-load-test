@@ -5,10 +5,10 @@
 # - iproute2 (for ss command)
 set -eEuo pipefail
 
-trap 'last_command=$BASH_COMMAND;signal_received="EXIT";cleanup;exit 0' EXIT
-trap 'last_command=$BASH_COMMAND;signal_received="INT";trap - INT; cleanup;kill -INT $$' INT
-trap 'last_command=$BASH_COMMAND;signal_received="TERM";trap - TERM;cleanup;kill -TERM $$' TERM
-trap 'last_command=$BASH_COMMAND;signal_received="ERR";cleanup;exit 1' ERR
+trap 'last_command=$BASH_COMMAND;signal_received="EXIT";cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";exit 0' EXIT
+trap 'last_command=$BASH_COMMAND;signal_received="INT";trap - INT; cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";kill -INT $$' INT
+trap 'last_command=$BASH_COMMAND;signal_received="TERM";trap - TERM;cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";kill -TERM $$' TERM
+trap 'last_command=$BASH_COMMAND;signal_received="ERR";cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";exit 1' ERR
 
 # Create temp files to store the output of each collection command.
 cpuf=$(mktemp)
@@ -19,19 +19,37 @@ vusf=$(mktemp)
 rpsf=$(mktemp)
 error_log=$(mktemp)
 
+url=${BENCHMARK_URL:-http://localhost:8080}
+url_without_protocol=$(echo "$url" | sed 's|http[s]*://||; s|/$||')
+sint="${BENCH_SAMPLE_INTERVAL:-1}"
+device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($i == "dev") print $(i+1)}')
+
 function cleanup {
-  exit_status=$?
-  echo "Cleaning up..."
-  echo "BENCHMARKING_END" | nc ${url_without_protocol} 30000
-  echo "Received signal: $signal_received" || true
-  echo "Last command: $last_command" || true
-  echo "Exit status: $exit_status" || true``
-  rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf"
-  echo "Error log:" && cat "$error_log"
-  cp $error_log ${exp_dir}/error.log
+    exit_status=$?
+    cpuf=${1:-}
+    memf=${2:-}
+    bandwidthf=${3:-}
+    sockf=${4:-}
+    vusf=${5:-}
+    rpsf=${6:-}
+    url_without_protocol=${7:-}
+    error_log=${8:-}
+    exp_dir=${9:-}
+  
+    echo "Cleaning up..."
+    echo "Sending benchmarking end signal to the server." && \
+        echo "BENCHMARKING_END" | nc ${url_without_protocol} 30000 || true
+    if [ $exit_status -ne 0 ]; then
+        echo "Received signal: $signal_received" || true
+        echo "Last command: $last_command" || true
+        echo "Exit status: $exit_status" || true
+    fi
+
+    rm -f "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf"
+    cp $error_log ${exp_dir}/error.log
+    echo "Error log saved to ${exp_dir}/error.log"
+    echo "Cleanup complete."
 }
-
-
 
 # Redirect all stdout to both the console and the error_log file
 exec > >(tee -a "$error_log") 2>&1
@@ -47,13 +65,9 @@ echo "error log: $error_log"
 # 5s is the default interval between samples.
 # Note that this might be greater if either smem or the k6 API takes more time
 # than this to return a response.
-sint="${BENCH_SAMPLE_INTERVAL:-1}"
 
-url=${BENCHMARK_URL:-http://localhost:8080}
-url_without_protocol=$(echo "$url" | sed 's|http[s]*://||; s|/$||')
 echo "benchmarking $url endpoint ($url_without_protocol) with tool $TOOL"
 echo "benchmark url: ${BENCHMARK_URL}<"
-device=$(ip route get "$url_without_protocol" | awk '{for (i=1; i<NF; i++) if ($i == "dev") print $(i+1)}')
 
 if [ -z "${TOOL:-}" ]; then
     echo "TOOL environment variable must be set to specify the tool to benchmark"
@@ -86,7 +100,7 @@ echo "using device $device with max bandwidth $max_bandwidth_kbps KB/s"
 # Run the collection processes in parallel to avoid blocking.
 # For details see https://stackoverflow.com/a/68316571
 
-k6 run "$@" -e URL="$url" -e EXP_DIR="${exp_dir}" >$out_file 2>&1 &
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=${exp_dir}/exp_report.html k6 run "$@" -e URL="$url" -e EXP_DIR="${exp_dir}" >$out_file 2>&1 &
 pid="$!"
 
 echo "pid is $pid"
@@ -96,7 +110,7 @@ while true; do
     # Check if the process is still running
     if ! ps -p "$pid" > /dev/null; then
         echo "Process $pid has terminated. Exiting loop."
-        exit 0
+        break
     fi
   
     echo "Collecting metrics for process $pid"
@@ -149,11 +163,13 @@ while true; do
         cat "$error_log"
         exit 1
     fi
-    trap 'last_command=$BASH_COMMAND; signal_received="ERR"; cleanup; exit 1' ERR
-    trap 'last_command=$BASH_COMMAND; signal_received="TERM"; trap - TERM; cleanup; kill -TERM $$' TERM
-    trap 'last_command=$BASH_COMMAND; signal_received="INT"; trap - INT; cleanup; kill -INT $$' INT
-    trap 'last_command=$BASH_COMMAND; signal_received="EXIT"; cleanup; exit 0' EXIT
-  
+    
+    trap 'last_command=$BASH_COMMAND;signal_received="EXIT";cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";exit 0' EXIT
+    trap 'last_command=$BASH_COMMAND;signal_received="INT";trap - INT; cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";kill -INT $$' INT
+    trap 'last_command=$BASH_COMMAND;signal_received="TERM";trap - TERM;cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";kill -TERM $$' TERM
+    trap 'last_command=$BASH_COMMAND;signal_received="ERR";cleanup "$cpuf" "$memf" "$bandwidthf" "$sockf" "$vusf" "$rpsf" "$url_without_protocol" "$error_log" "$exp_dir";exit 1' ERR
+
+    
     bandwidth=$(cat "$bandwidthf")
     bandwidth_utilization=$(awk -v bw="$bandwidth" -v max_bw="$max_bandwidth_kbps" 'BEGIN { printf "%.2f", (bw / max_bw) * 100 }')
     open_sockets=$(cat "$sockf")
