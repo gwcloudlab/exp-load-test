@@ -33,9 +33,3 @@ export default function() {
   };
   console.log(`${record.timestamp},${record.url},${record.method},${record.status},${record.response_time},${record.body_size}`);
 }
-
-// export function handleSummary(data) {
-//   return {
-//     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
-//   };
-// }

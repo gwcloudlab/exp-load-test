@@ -78,5 +78,21 @@
         "tags": [
             "variable worker connections"
         ]
+    },
+    {
+        "name": "exp-6",
+        "description": "Smoke Test",
+        "config": {
+            "loadgen": {
+                "runcfg": "configs/k6/smoke-test/script.js",
+                "parameters": []
+            },
+            "server": {
+                "WORKER_CONNECTIONS": 400
+            }
+        },
+        "tags": [
+            "variable worker connections"
+        ]
     }
 ]
