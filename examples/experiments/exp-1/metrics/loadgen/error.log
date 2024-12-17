@@ -1,66 +1,66 @@
-cpu file: /tmp/tmp.TYlPLBVqNV
-mem file: /tmp/tmp.jVjWcPUfIT
-bandwidth file: /tmp/tmp.czCPen4poW
-sock file: /tmp/tmp.0PO3lQaC0n
-vus file: /tmp/tmp.tkt9lviJHZ
-rps file: /tmp/tmp.eHeoR8TBPf
-error log: /tmp/tmp.Jt4MQN6fBG
+cpu file: /tmp/tmp.rnUmDvUQ0K
+mem file: /tmp/tmp.pEpaEh0RFm
+bandwidth file: /tmp/tmp.m59KYjXMMa
+sock file: /tmp/tmp.UgUAbMCvdT
+vus file: /tmp/tmp.XqI34noQph
+rps file: /tmp/tmp.d6Dut5op38
+error log: /tmp/tmp.9HSRjI0wpR
 benchmarking http://192.168.1.2 endpoint (192.168.1.2) with tool k6
 benchmark url: http://192.168.1.2<
-error log: /tmp/tmp.Jt4MQN6fBG
+error log: /tmp/tmp.9HSRjI0wpR
 using device enp6s0f0 with max bandwidth 1280000 KB/s
-pid is 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Collecting metrics for process 37782
-Process 37782 has terminated. Exiting loop.
+pid is 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Collecting metrics for process 40427
+Process 40427 has terminated. Exiting loop.
 Cleaning up...
 Sending benchmarking end signal to the server.

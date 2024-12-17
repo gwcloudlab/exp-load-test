@@ -1,4 +1,5 @@
 import http from 'k6/http';
+import { Trend } from 'k6/metrics';
 
 const url = __ENV.URL;
 const exp_dir = __ENV.EXP_DIR;
@@ -21,6 +22,8 @@ export const options = {
 //   http.get(url);
 // }
 
+const customTrend = new Trend('custom_trend');
+
 export default function() {
   const res = http.get(url);
   const record = {
@@ -31,5 +34,6 @@ export default function() {
     response_time: res.timings.duration,
     body_size: res.body.length,
   };
+  customTrend.add(res.timings.duration);
   console.log(`${record.timestamp},${record.url},${record.method},${record.status},${record.response_time},${record.body_size}`);
 }
