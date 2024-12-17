@@ -90,6 +90,7 @@ After this, you will have a directory created with the name `experiments/exp-1` 
 - `config`: which contains a copy of configurations for the load generator and web server. These configs are copied with the experiment because the configurations might change between experiments and you might want to keep a record of the configurations used for each experiment.
     - `loadgen`: contains the configurations for the load generator, including the k6 script and any additional parameters passed to the k6 run command. 
     - `server`: contains the configurations for the web server. 
+    - `experiment.json`: this file contains the json configuration of the experiment that was specified in the `experiments.json` file.
 - `metrics`: contains the metrics collected during the experiment.
     - `loadgen`: this directory contains the metrics of the load generator.
         - `error.log`: this file contains the logs of the load generator
@@ -99,6 +100,15 @@ After this, you will have a directory created with the name `experiments/exp-1` 
         - `results.csv`: this csv contains the benchmarks of the load generator and metrics from the K6. 
     - `server`: this directory contains the metrics of the web server.
         - `results.csv`: this csv contains the benchmark of the web server throughout the duration of the experiment. 
+    - `processed`: this directory contains the processed data and plots of the metrics. 
+        - `data`: this directory contains the processed data of the metrics. It contains the following csv files:
+            - `merged_results.csv`: This file contains the merged results of the load generator and the web server.
+            - `per_req_agg.csv`: This file contains the aggregated metrics for each request made by the load generator, along with the benchmarking results of the web server. 
+        - `plots`: this directory contains the plots of the metrics.
+            - `response_time_vs_cpu`: this polt shows shows the variations in the response time as recorded in the load generator and the CPU usage of the web server, against timestamp. 
+            - `response_time_vs_memory`: this plot shows the variations in the response time as recorded in the load generator and the memory usage of the web server, against timestamp.
+            - `rps_vs_cpu`: this plot shows the variations in the requests per second as recorded in the load generator and the CPU usage of the web server, against timestamp.
+            - `rps_vs_memory`: this plot shows the variations in the requests per second as recorded in the load generator and the memory usage of the web server, against timestamp.
 
 You can use these metrics to analyze the performance of the web server throughout the duration of the experiment. 
 
@@ -126,6 +136,9 @@ This repository is organized as follows:
 │   │       └── metrics
 │   │           ├── loadgen
 │   │           └── server
+│   │           ├── processed
+│   │           │   ├── data
+│   │           │   └── plots
 │   └── k6
 │       ├── k6_resp
 │       │   └── output

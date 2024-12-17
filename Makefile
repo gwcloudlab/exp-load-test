@@ -15,24 +15,25 @@ SERVER_NODE=NODE_1
 REMOTE_DIR=/users/${CLOUDLAB_USERNAME}/src
 REMOTE_SUBDIR=$(shell basename ${CURDIR})
 PROJ_ROOT_DIR="${REMOTE_DIR}/${REMOTE_SUBDIR}"
+SYNC_EXCLUDE_FROM=${CL_DIR}/sync-exclude
 
 
 sync-code-to-nodes:
 	@echo "Syncing code to the nodes..."
-	$(MAKE) cl-sync-code NODE=${LOAD_GEN_NODE} && \
-	$(MAKE) cl-sync-code NODE=${SERVER_NODE} && \
+	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=${LOAD_GEN_NODE} && \
+	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=${SERVER_NODE} && \
 	echo "Code synced to the nodes"
 
 
 setup-loadgen-node:
 	@echo "Setting up the load generator node..."
-	$(MAKE) cl-sync-code NODE=$(LOAD_GEN_NODE) && \
+	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=$(LOAD_GEN_NODE) && \
 	$(MAKE) cl-run-cmd NODE=$(LOAD_GEN_NODE) COMMAND="cd ${REMOTE_DIR}/exp-load-test && ./install.sh setup_loadgen" && \
 	echo "Load generator node setup done"
 
 setup-server-node:
 	@echo "Setting up the server node..."
-	$(MAKE) cl-sync-code NODE=${SERVER_NODE} && \
+	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=${SERVER_NODE} && \
 	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/server/nginx && make setup" && \
 	echo "Server node setup done"
 
