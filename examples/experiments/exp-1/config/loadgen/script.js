@@ -1,6 +1,4 @@
 import http from 'k6/http';
-import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
-
 
 const url = __ENV.URL;
 const exp_dir = __ENV.EXP_DIR;
@@ -15,7 +13,8 @@ export const options = {
       preAllocatedVUs: 100, // Number of VUs to pre-allocate
       maxVUs: 200, // Maximum number of VUs to allow
     }
-  }
+  },
+  summaryTrendStats: ["avg", "max", "min", "med", "p(90)", "p(95)", "p(99)", "p(99.9)", "p(99.99)", "p(99.999)", "count"],
 };
 
 // export default function() {

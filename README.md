@@ -24,10 +24,10 @@ make cl-setup
 
 This command will create a `.cloudlab` directory. This directory contains the configuration files used by the cloudlab tools. Configure the following parameters in the `.cloudlab/config` file.
 
-- SSH_KEY_PATH : The absolute path to the ssh key used to connect to the nodes.
-- CLOUDLAB_USERNAME : Ths username to use with your cloudlab account, or the username for your custom servers. 
-- NODE_0 : The IP address of the load generator node. This node will generate the load for the web server.
-- NODE_1 : The IP address of the web server node. This node will host the web server.
+- `SSH_KEY_PATH` : The absolute path to the ssh key used to connect to the nodes.
+- `CLOUDLAB_USERNAME` : Ths username to use with your cloudlab account, or the username for your custom servers. 
+- `NODE_0` : The IP address of the load generator node. This node will generate the load for the web server.
+- `NODE_1` : The IP address of the web server node. This node will host the web server.
 
 4. Setup the platform. Run the following command to setup the platform. This command will install the necessary tools on the nodes and configure them. 
 
@@ -85,26 +85,26 @@ Let's break down the configuration:
 make run-exp EXP_NAME=exp-1
 ```
 
-7. Once the experiment is complete, run the following command to copy the experiment results to your local machine. 
-
-```bash
-make copy-exp-data EXP_NAME=exp-1
-```
-
-
 After this, you will have a directory created with the name `experiments/exp-1` in the root of this repository. This directory contains the following: 
 
-- `config`: which contains a copy of configurations for the load generator and web server
+- `config`: which contains a copy of configurations for the load generator and web server. These configs are copied with the experiment because the configurations might change between experiments and you might want to keep a record of the configurations used for each experiment.
     - `loadgen`: contains the configurations for the load generator, including the k6 script and any additional parameters passed to the k6 run command. 
     - `server`: contains the configurations for the web server. 
 - `metrics`: contains the metrics collected during the experiment.
     - `loadgen`: this directory contains the metrics of the load generator.
+        - `error.log`: this file contains the logs of the load generator
+        - `exp_report.html`: this file contains an html report of the experiment. The report contains the metrics gathered by k6 and some visualizations. 
         - `out.txt`: this is the output of the k6 run command. 
+        - `per_req_data.csv`: this file contains the metrics of each request made by the load generator.
         - `results.csv`: this csv contains the benchmarks of the load generator and metrics from the K6. 
     - `server`: this directory contains the metrics of the web server.
         - `results.csv`: this csv contains the benchmark of the web server throughout the duration of the experiment. 
 
-You can use these metrics to analyze the performance of teh web server throughout the duration of the experiment. 
+You can use these metrics to analyze the performance of the web server throughout the duration of the experiment. 
+
+The experiments repository is not included in the git version controlling because the experiments results can be large. This may also go beyond the git storage limits. If you want to store the results, you can use a cloud storage service like AWS S3, Google Cloud Storage, or any other storage service. 
+
+A sample output of step 6 is provided in the directory [examples/experiments/exp-1](examples/experiments/exp-1) directory. 
 
 
 ## Organization of this repository
@@ -118,6 +118,14 @@ This repository is organized as follows:
 │   ├── k6
 │   └── server
 ├── examples
+│   ├── experiments
+│   │   └── exp-1
+│   │       ├── config
+│   │       │   ├── loadgen
+│   │       │   └── server
+│   │       └── metrics
+│   │           ├── loadgen
+│   │           └── server
 │   └── k6
 │       ├── k6_resp
 │       │   └── output
@@ -148,7 +156,9 @@ This repository is organized as follows:
 - `configs`: This directory contains the configurations for both the server and the load generator. 
     - `k6`: This directory contains the k6 script files. 
     - `server`: This directory contains the configurations for the web server.
-- `examples`: This directory contains examples of k6 scripts.
+- `examples`: This directory contains examples of k6 scripts and other useful resources. 
+    - `experiments`: This directory contains the example output of the experiments. 
+    - `k6`: This directory contains examples of k6 scripts.
 - `experiments`: This directory contains the results of the experiments. This directory is excluded from the git version controlling. 
 - `loadgen`: This directory contains the benchmarking scripts for the load generator. 
 - `scripts`: This directory contains the shell scripts to perform the experiments.
@@ -158,6 +168,4 @@ This repository is organized as follows:
 - `install.sh`: This script contains the installation scripts, useful for setting up the server. 
 - `Makefile`: This file contains a collection of make targets useful for setting up and running the experiments. 
 - `requirements.txt`: This file contains the python requirements useful for plotting the results. 
-
-
 
