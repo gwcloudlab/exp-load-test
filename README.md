@@ -182,3 +182,62 @@ This repository is organized as follows:
 - `Makefile`: This file contains a collection of make targets useful for setting up and running the experiments. 
 - `requirements.txt`: This file contains the python requirements useful for plotting the results. 
 
+## Analyzing the results
+
+This repository provides you with the necessary tools to perform your experiment with a single command. The results are also copied from the respective benchmarking nodes and the some simple graphs are plotted. An example of the outputs is provided in the [examples/experiments/exp-1](examples/experiments/exp-1) directory. Here is a small preview of the tables and plots generated:
+
+### Aggregated metrics
+
+The following files are created after copying the metrics from the load generator and the server: 
+- `data/merged_results.csv`: This file contains the merged results of the load generator and the web server. 
+- `data/per_req_agg.csv`: This file contains the aggregated metrics for each request made by the load generator, along with the benchmarking results of the web server.
+
+Here is a sample of the data: 
+
+#### data/merged_results.csv
+
+|timestamp |cpu_server         |mem_server         |cpu_loadgen|mem_loadgen|bandwidth_loadgen|bandwidth_utilization_loadgen|open_sockets_loadgen|vus_loadgen|rps_loadgen|
+|----------|-------------------|-------------------|-----------|-----------|-----------------|-----------------------------|--------------------|-----------|-----------|
+|1734414395|8.7                |13287              |24.8       |55104      |158.89           |0.01                         |95                  |0          |97.08102802687466|
+|1734414397|3.0                |13263              |15.0       |57848      |158.91           |0.01                         |95                  |0          |98.6317855194196|
+|1734414398|2.0                |13303              |27.0       |59904      |158.76           |0.01                         |95                  |0          |99.16193156281643|
+
+
+#### data/per_req_agg.csv
+
+|timestamp |response_time_mean |response_time_std  |response_time_min|response_time_max|cpu_server|mem_server|cpu_loadgen|mem_loadgen|bandwidth_loadgen|bandwidth_utilization_loadgen|open_sockets_loadgen|vus_loadgen|rps_loadgen      |
+|----------|-------------------|-------------------|-----------------|-----------------|----------|----------|-----------|-----------|-----------------|-----------------------------|--------------------|-----------|-----------------|
+|1734414395|0.47041967999999995|0.06179901456438345|0.296018         |0.59             |8.7       |13287     |24.8       |55104      |158.89           |0.01                         |95                  |0          |97.08102802687466|
+|1734414397|0.47007924         |0.13556359636412035|0.283925         |1.618512         |3.0       |13263     |15.0       |57848      |158.91           |0.01                         |95                  |0          |98.6317855194196 |
+|1734414398|0.4666482          |0.06265758903159717|0.342546         |0.625163         |2.0       |13303     |27.0       |59904      |158.76           |0.01                         |95                  |0          |99.16193156281643|
+
+
+### Plots
+
+The following plots are generated after copying the metrics from the load generator and the server:
+
+- `plots/response_time_vs_cpu`: This polt shows shows the variations in the response time as recorded in the load generator and the CPU usage of the web server, against timestamp.
+- `plots/response_time_vs_memory`: This plot shows the variations in the response time as recorded in the load generator and the memory usage of the web server, against timestamp.
+- `plots/rps_vs_cpu`: This plot shows the variations in the requests per second as recorded in the load generator and the CPU usage of the web server, against timestamp.
+- `plots/rps_vs_memory`: This plot shows the variations in the requests per second as recorded in the load generator and the memory usage of the web server, against timestamp.
+
+Here is a sample of the plots:
+
+
+#### plots/response_time_vs_cpu
+
+![response_time_vs_cpu](examples/experiments/exp-1/metrics/processed/plots/response_time_vs_cpu.png)
+
+#### plots/response_time_vs_memory
+
+![response_time_vs_memory](examples/experiments/exp-1/metrics/processed/plots/response_time_vs_mem.png)
+
+#### plots/rps_vs_cpu
+
+![rps_vs_cpu](examples/experiments/exp-1/metrics/processed/plots/rps_vs_cpu.png)
+
+#### plots/rps_vs_memory
+
+![rps_vs_memory](examples/experiments/exp-1/metrics/processed/plots/rps_vs_mem.png)
+
+
