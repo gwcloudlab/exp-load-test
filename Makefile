@@ -16,6 +16,7 @@ REMOTE_DIR=/users/${CLOUDLAB_USERNAME}/src
 REMOTE_SUBDIR=$(shell basename ${CURDIR})
 PROJ_ROOT_DIR="${REMOTE_DIR}/${REMOTE_SUBDIR}"
 SYNC_EXCLUDE_FROM=${CL_DIR}/sync-exclude
+MODULE_NAME=$(shell basename ${CURDIR})
 
 
 sync-code-to-nodes:
@@ -28,13 +29,13 @@ sync-code-to-nodes:
 setup-loadgen-node:
 	@echo "Setting up the load generator node..."
 	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=$(LOAD_GEN_NODE) && \
-	$(MAKE) cl-run-cmd NODE=$(LOAD_GEN_NODE) COMMAND="cd ${REMOTE_DIR}/exp-load-test && ./install.sh setup_loadgen" && \
+	$(MAKE) cl-run-cmd NODE=$(LOAD_GEN_NODE) COMMAND="cd ${REMOTE_DIR}/$(MODULE_NAME) && ./install.sh setup_loadgen" && \
 	echo "Load generator node setup done"
 
 setup-server-node:
 	@echo "Setting up the server node..."
 	$(MAKE) cl-sync-code SYNC_EXCLUDE_FROM=$(SYNC_EXCLUDE_FROM) NODE=${SERVER_NODE} && \
-	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/server/nginx && make setup" && \
+	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/$(MODULE_NAME)/server/nginx && make setup" && \
 	echo "Server node setup done"
 
 setup-python-venv-local:
@@ -53,15 +54,15 @@ setup-platform:
 
 copy-all-exp-from-loadgen:
 	@echo "Copying all experiments from the loadgen..."
-	$(MAKE) cl-scp-from-host NODE=${LOAD_GEN_NODE} SCP_SRC=$(REMOTE_DIR)/exp-load-test/experiments SCP_DEST=${CURDIR} && \
+	$(MAKE) cl-scp-from-host NODE=${LOAD_GEN_NODE} SCP_SRC=$(REMOTE_DIR)/$(MODULE_NAME)/experiments SCP_DEST=${CURDIR} && \
 	echo "All experiments copied from the loadgen"
 
 copy-exp-data:
 	echo $(REMOTE_DIR)
 	@echo "Copying experiment data..." && \
 	mkdir -p ${EXP_DIR}/metrics/loadgen ${EXP_DIR}/metrics/server && \
-	$(MAKE) cl-scp-from-host NODE=$(SERVER_NODE) SCP_SRC=$(REMOTE_DIR)/exp-load-test/experiments/${EXP_NAME}/metrics/server SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
-	$(MAKE) cl-scp-from-host NODE=$(LOAD_GEN_NODE) SCP_SRC=$(REMOTE_DIR)/exp-load-test/experiments/${EXP_NAME}/metrics/loadgen SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
+	$(MAKE) cl-scp-from-host NODE=$(SERVER_NODE) SCP_SRC=$(REMOTE_DIR)/$(MODULE_NAME)/experiments/${EXP_NAME}/metrics/server SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
+	$(MAKE) cl-scp-from-host NODE=$(LOAD_GEN_NODE) SCP_SRC=$(REMOTE_DIR)/$(MODULE_NAME)/experiments/${EXP_NAME}/metrics/loadgen SCP_DEST=${CURDIR}/experiments/${EXP_NAME}/metrics && \
 	source .venv/bin/activate && python3 scripts/process_results.py --exp-dir ${EXP_DIR} && \
 	echo "Experiment data copied"
 
@@ -75,7 +76,7 @@ gen-exp-config:
 configure-server: 
 	@echo "Configuring server..." && \
 	$(MAKE) cl-sync-code NODE=${SERVER_NODE} && \
-	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/server && make configure-server EXP_NAME=${EXP_NAME} EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
+	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/$(MODULE_NAME)/server && make configure-server EXP_NAME=${EXP_NAME} EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
 	echo "Server configured"
 
 run-exp: 
@@ -84,8 +85,8 @@ run-exp:
 	$(MAKE) gen-exp-config && \
 	$(MAKE) configure-server && \
 	$(MAKE) sync-code-to-nodes && \
-	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/server && make benchmark-server EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
-	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/exp-load-test/loadgen && make perform-exp BENCHMARK_URL=${BENCHMARK_URL} EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
+	$(MAKE) cl-run-cmd NODE=${SERVER_NODE} COMMAND="cd ${REMOTE_DIR}/$(MODULE_NAME)/server && make benchmark-server EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
+	$(MAKE) cl-run-cmd NODE=${LOAD_GEN_NODE} COMMAND="cd ${REMOTE_DIR}/$(MODULE_NAME)/loadgen && make perform-exp BENCHMARK_URL=${BENCHMARK_URL} EXP_DIR=${REMOTE_DIR}/${REMOTE_SUBDIR}/experiments/${EXP_NAME}" && \
 	$(MAKE) copy-exp-data && \
 	echo "Experiment ${EXP_NAME} done"
 
