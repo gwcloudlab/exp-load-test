@@ -4,6 +4,10 @@ This repository is a collection of tools and commands for configuring experiment
 
 This repository uses [K6](https://k6.io/) and [Nginx](https://www.nginx.com/) to run load tests. But you can configure this repository to use any other web server. The commands are written in a way that you can easily replace Nginx with any other web server. 
 
+## Why K6? 
+
+We performed a series of experiments with K6, Oha, Wrk, Wrk2, ApacheBench, and Locust. We found k6 to be the best tool in terms of ease of use, flexibility, and the metrics it provides. A detailed comparison of the tools is available in the report [here](https://github.com/rutu-sh/load-testing/blob/main/REPORT.md). 
+
 ## Getting started 
 
 In this section we will go through the steps to configure and run the load tests with K6 and a Nginx web server. 
